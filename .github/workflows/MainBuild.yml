@@ -34,11 +34,14 @@ jobs:
         shell: bash
         run: |
           ls
+          
+          ls ItemStockChecker
+          
           tag=$(git describe --tags --abbrev=0)
           release_name="App-$tag-${{ matrix.target }}"
 
           # Build everything
-          dotnet publish ItemStockchecker.csproj --framework net5.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
+          dotnet publish ItemStockChecker/ItemStockChecker.csproj --framework net5.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
 
           # Pack files
           if [ "${{ matrix.target }}" == "win-x64" ]; then
