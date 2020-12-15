@@ -1,6 +1,6 @@
 # ItemStockChecker
 
-This is a program that is used to check the stock of products for various websites. After the product is found to be in stock, you will get a text with a link to the product page so you can quickly make your purchase.
+This is a program that is used to check the stock of products for various websites. After the product is found to be in stock, you will get a text with a link to the product page so you can quickly make your purchase. This is a very early version of this. I hope to add lots of useful features and encourage sugestions/pull requests.
 
 This is a simple .NET 5 executable. This can be built for Windows or Linux.
 
@@ -26,7 +26,9 @@ Before running the application, be sure to update the app.config file with the a
 Each url is run on its own thread, letting multiple urls be checked asynchronously.
 
 Example output:
-![example_output](https://imgur.com/a/TSffbq4)
+![example_output](https://i.imgur.com/GM0PLmn.png)
+
+![example_output_gif](https://media.giphy.com/media/GGBUgdqJPYKCzJftoV/giphy.gif)
 
 # TODOs:
 
