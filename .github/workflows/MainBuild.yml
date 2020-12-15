@@ -57,6 +57,6 @@ jobs:
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
-          files: "ItemStockChecker*, !ItemStockChecker.sln"           
+          files: "ItemStockChecker*.zip, ItemStockChecker*.gz"           
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
