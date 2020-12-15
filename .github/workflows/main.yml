@@ -40,4 +40,4 @@ jobs:
         uses: actions/upload-artifact@v1.0.0
         with:
           name: ItemStockChecker
-          path: bin\Release\Publish
+          path: bin\Release\net5.0\
