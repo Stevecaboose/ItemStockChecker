@@ -38,7 +38,7 @@ jobs:
           ls ItemStockChecker
           
           tag=$(git describe --tags --abbrev=0)
-          release_name="App-$tag-${{ matrix.target }}"
+          release_name="ItemStockChecker-$tag-${{ matrix.target }}"
 
           # Build everything
           dotnet publish ItemStockChecker/ItemStockChecker.csproj --framework net5.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
@@ -57,6 +57,6 @@ jobs:
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
-          files: "App*"
+          files: "ItemStockChecker*"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
