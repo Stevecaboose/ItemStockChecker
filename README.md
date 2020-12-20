@@ -4,7 +4,7 @@ This is a program that is used to check the stock of products for various websit
 
 This is a simple .NET 5 executable. This can be built for Windows or Linux.
 
-Before running the application, be sure to update the app.config file with the appropriate values.
+Before running the application, be sure to update the ItemStockChecker.dll.config file with the appropriate values.
 
 # Supported Phone providers:
 
