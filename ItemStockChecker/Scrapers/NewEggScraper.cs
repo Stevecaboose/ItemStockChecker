@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using HtmlAgilityPack;
 
 namespace ItemStockChecker.Scrapers
 {
@@ -7,21 +8,20 @@ namespace ItemStockChecker.Scrapers
     {
         public NewEggScraper(Uri url) : base(url)
         {
+            StoreName = "B&H";
+            HtmlDocument doc = _web.Load(url);
+            ProductName = doc.QuerySelector("h1[class='product-title']")?.InnerText.Trim();
         }
 
         public override void Scrape()
         {
             while (!FoundItemInStock)
             {
-                ConsoleOutputHelper.Write("Checking...", Thread.CurrentThread);
-                if (_webScraper == null)
-                {
-                    throw new NullReferenceException("WebScraper cannot be null");
-                }
+                ConsoleOutputHelper.Write($"{StoreName} {ProductName} Checking...", Thread.CurrentThread);
 
                 try
                 {
-                    Html = _webScraper.Get(_url.AbsoluteUri);
+                    Html = GetHtml();
 
                     if (Html.Contains("add to cart", StringComparison.CurrentCultureIgnoreCase))
                     {
@@ -29,14 +29,13 @@ namespace ItemStockChecker.Scrapers
                         break;
                     }
 
-                    ConsoleOutputHelper.Write("[Not in stock. Trying again...]", ConsoleColor.Red, Thread.CurrentThread);
+                    ConsoleOutputHelper.Write($"{StoreName} {ProductName} [Not in stock. Trying again...]", ConsoleColor.Red, Thread.CurrentThread);
 
                     CanScrape = true;
                 }
                 catch (Exception e)
                 {
-                    ConsoleOutputHelper.Write("New Egg", e);
-
+                    ConsoleOutputHelper.Write(StoreName, e);
                     CoolDown();
                 }
 

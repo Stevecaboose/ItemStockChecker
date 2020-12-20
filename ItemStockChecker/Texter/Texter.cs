@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Net;
-using System.Text;
-using System.Text.Encodings.Web;
-using Credfeto.UrlShortener.Shorteners;
+﻿using System.Configuration;
 using MailKit.Net.Smtp;
 using MimeKit;
 

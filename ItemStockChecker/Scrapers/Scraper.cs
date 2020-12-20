@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Threading;
-using HTML_DOM_Parser;
+using HtmlAgilityPack;
 
 namespace ItemStockChecker.Scrapers
 {
@@ -11,11 +11,11 @@ namespace ItemStockChecker.Scrapers
         #region Private Variables
 
         protected Uri _url;
-        protected WebScraper _webScraper;
         protected int _waitTime;
         protected List<Texter> _texterList;
         private int _cooldown;
         private int _cooldownTimer;
+        protected HtmlWeb _web;
 
 
         #endregion
@@ -28,6 +28,10 @@ namespace ItemStockChecker.Scrapers
 
         public bool CanScrape { get; set; } = false;
 
+        public string ProductName { get; set; }
+
+        public string StoreName { get; set; }
+
         #endregion
 
         #region Constructor
@@ -36,10 +40,11 @@ namespace ItemStockChecker.Scrapers
         {
             _texterList = new List<Texter>();
             _url = url;
-            _webScraper = new WebScraper();
             _waitTime = int.Parse(ConfigurationManager.AppSettings["PageRefreshTime"] ?? string.Empty);
             _cooldown = int.Parse(ConfigurationManager.AppSettings["CoolDownTime"] ?? "30");
             _cooldownTimer = _cooldown;
+            _web = new HtmlWeb();
+
 
             if (bool.Parse(ConfigurationManager.AppSettings["TMobileEnabled"] ?? throw new InvalidOperationException()))
             {
@@ -127,6 +132,12 @@ namespace ItemStockChecker.Scrapers
         }
 
         public abstract void Scrape();
+
+        public virtual string GetHtml()
+        {
+            HtmlDocument doc = _web.Load(_url);
+            return doc.Text;
+        }
 
         #endregion
     }

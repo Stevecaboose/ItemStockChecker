@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Threading;
+using HtmlAgilityPack;
 
 namespace ItemStockChecker.Scrapers
 {
-    public class BHScraper : Scraper
+    public sealed class BHScraper : Scraper
     {
-        public BHScraper(Uri url) : base(url) {}
+        public BHScraper(Uri url) : base(url)
+        {
+            StoreName = "B&H";
+            HtmlDocument doc = _web.Load(url);
+            ProductName = doc.QuerySelector("h1[data-selenium='productTitle']")?.InnerText.Trim();
+        }
 
         #region Public Methods
 
@@ -14,15 +20,11 @@ namespace ItemStockChecker.Scrapers
         {
             while (!FoundItemInStock)
             {
-                ConsoleOutputHelper.Write("Checking...", Thread.CurrentThread);
-                if (_webScraper == null)
-                {
-                    throw new NullReferenceException("WebScraper cannot be null");
-                }
+                ConsoleOutputHelper.Write($"{StoreName} {ProductName} Checking...", Thread.CurrentThread);
 
                 try
                 {
-                    Html = _webScraper.Get(_url.AbsoluteUri);
+                    Html = GetHtml();
 
                     if (Html.Contains("<button data-selenium=\"addToCartButton\""))
                     {
@@ -32,12 +34,11 @@ namespace ItemStockChecker.Scrapers
 
                     CanScrape = true;
 
-                    ConsoleOutputHelper.Write("[Not in stock. Trying again...]", ConsoleColor.Red, Thread.CurrentThread);
+                    ConsoleOutputHelper.Write($"{StoreName} {ProductName} [Not in stock. Trying again...]", ConsoleColor.Red, Thread.CurrentThread);
                 }
                 catch (Exception e)
                 {
-                    ConsoleOutputHelper.Write("B&H", e);
-
+                    ConsoleOutputHelper.Write(StoreName, e);
                     CoolDown();
                 }
 

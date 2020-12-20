@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ItemStockChecker
 {
@@ -79,9 +75,9 @@ namespace ItemStockChecker
                 }
 
 
-                for (int i = 0; i < pieces.Length; i++)
+                foreach (var t in pieces)
                 {
-                    string piece = pieces[i];
+                    string piece = t;
 
                     if (piece.StartsWith("[") && piece.EndsWith("]"))
                     {
@@ -92,7 +88,6 @@ namespace ItemStockChecker
                     Console.Write(piece);
 
                     Console.ResetColor();
-
                 }
 
                 Console.WriteLine();
