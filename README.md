@@ -6,6 +6,27 @@ This is a simple .NET 5 executable. This can be built for Windows or Linux.
 
 Before running the application, be sure to update the ItemStockChecker.dll.config file with the appropriate values.
 
+# Config settings that need to be set before the first run
+
+* Inside <urls> you must put your urls for the pages there. There are some inside the current config as an example. Note: you must escape xml special characters when pasting in urls. Otherwise you will get an exception when you try to start the application
+  
+* PhoneNumber needs to set just as a number (no dashes or parentheses).
+* Each phone provider section has a enabled that you can use to turn it on or off [true|false]
+
+* YourEmail: This must be a gmail.
+* AppPassword: Please visit https://support.google.com/accounts/answer/185833?p=InvalidSecondFactor&visit_id=637421952488948393-2531523670&rd=1 to see how to generate this value
+
+* PageRefreshTime: This is how often a page will be checked (ms)
+* CoolDownTime: This is how long the program will wait after being temporarily banned (min). This value will double each time the cool down hits 0 and still has an error.
+
+# Supported websites
+
+* Amazon
+* Best Buy
+* B&H
+* Micro Center
+* New Egg
+
 # Supported Phone providers:
 
 * Verizon
