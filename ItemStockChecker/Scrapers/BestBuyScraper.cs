@@ -21,9 +21,13 @@ namespace ItemStockChecker.Scrapers
 
                 try
                 {
-                    Html = Html = GetHtml();
+                    var doc = GetHtmlDocument();
+                    Html = doc.Text;
 
-                    if (Html.Contains("Add to Cart", StringComparison.CurrentCultureIgnoreCase))
+                    var addToCartButton = doc.QuerySelector("button[class*='add-to-cart-button']")?.InnerText.Trim()
+                        .ToLower();
+
+                    if (Html.Contains("Add to Cart", StringComparison.CurrentCultureIgnoreCase) && !String.IsNullOrEmpty(addToCartButton))
                     {
                         SendSuccessMessage();
                         break;

@@ -13,8 +13,8 @@ namespace ItemStockChecker.Scrapers
         protected Uri _url;
         protected int _waitTime;
         protected List<Texter> _texterList;
-        private int _cooldown;
-        private int _cooldownTimer;
+        private int _cooldownTime;
+        private int _currentCoolDownTime;
         protected HtmlWeb _web;
 
 
@@ -41,8 +41,8 @@ namespace ItemStockChecker.Scrapers
             _texterList = new List<Texter>();
             _url = url;
             _waitTime = int.Parse(ConfigurationManager.AppSettings["PageRefreshTime"] ?? string.Empty);
-            _cooldown = int.Parse(ConfigurationManager.AppSettings["CoolDownTime"] ?? "30");
-            _cooldownTimer = _cooldown;
+            _cooldownTime = int.Parse(ConfigurationManager.AppSettings["CoolDownTime"] ?? "30");
+            _currentCoolDownTime = _cooldownTime;
             _web = new HtmlWeb();
 
 
@@ -77,22 +77,22 @@ namespace ItemStockChecker.Scrapers
             // If we threw another exception after the cool down is at 0 that means we need to wait longer
             if (!CanScrape)
             {
-                _cooldownTimer = _cooldown * 2;
-                _cooldown = _cooldownTimer;
-            }
-            else
-            {
-                _cooldown = int.Parse(ConfigurationManager.AppSettings["CoolDownTime"] ?? "30");
-                _cooldownTimer = _cooldown;
+                // If this is a new timer, it will be at 0 and we need to then set it up
+                if (_currentCoolDownTime == 0)
+                {
+                    _currentCoolDownTime = _cooldownTime * 2;
+                    _cooldownTime = _currentCoolDownTime;
+                }
             }
 
             CanScrape = false;
 
-            ConsoleOutputHelper.Write($"Cooling down for {_cooldownTimer} minutes...", Thread.CurrentThread);
+            ConsoleOutputHelper.Write($"{StoreName} {ProductName} is cooling down for {_cooldownTime} minutes...", Thread.CurrentThread);
 
-            for (int i = _cooldownTimer; i > 0; i--)
+            for (int i = _cooldownTime; i >= 0; i--)
             {
-                ConsoleOutputHelper.Write($"Cooldown for {i} minutes...", Thread.CurrentThread);
+                ConsoleOutputHelper.Write($"{StoreName} {ProductName} is cooling down for {i} minutes...", Thread.CurrentThread);
+                _currentCoolDownTime = i;
                 Thread.Sleep(new TimeSpan(0, 1, 0));
             }
             
@@ -137,6 +137,11 @@ namespace ItemStockChecker.Scrapers
         {
             HtmlDocument doc = _web.Load(_url);
             return doc.Text;
+        }
+
+        public virtual HtmlDocument GetHtmlDocument()
+        {
+            return _web.Load(_url);
         }
 
         #endregion
