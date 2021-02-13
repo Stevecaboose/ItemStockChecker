@@ -41,7 +41,7 @@ jobs:
           release_name="ItemStockChecker-$tag-${{ matrix.target }}"
 
           # Build everything
-          dotnet publish ItemStockChecker/ItemStockChecker.csproj --framework net5.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
+          dotnet publish ItemStockChecker.Console/ItemStockChecker.Console.csproj --framework net5.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
 
           # Pack files
           if [ "${{ matrix.target }}" == "win-x64" ]; then
