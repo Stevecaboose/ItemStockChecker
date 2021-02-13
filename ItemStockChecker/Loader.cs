@@ -45,6 +45,11 @@ namespace ItemStockChecker
                     scraper = new MicroCenterScraper(url);
                     break;
                 }
+                case "www.amd.com":
+                {
+                    scraper = new AmdScraper(url);
+                    break;
+                }
 
                 default: throw new ArgumentException("Could not find scraper for url: " + url.Host);
             }
